@@ -10,7 +10,9 @@ from docx.shared import RGBColor
 from docx.oxml.ns import qn
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 #re_format = get_format()
-def output(content,get_format,report_name):
+
+# content: 字典类型，key is a subtitle, value is a section.
+def output(content,format,report_name,keyword=None):
     # TODO：补充自定义格式，get_format的接入
     # 创建一个Word文档对象
     document = Document()
@@ -19,8 +21,11 @@ def output(content,get_format,report_name):
     for subtitle in content.keys():
         # 添加子标题
         document.add_heading(subtitle ,level=2)
-    # 添加一个段落
+        # 添加一个段落
         paragraph = document.add_paragraph(content[subtitle])
+        # 通过调用get_format()设置格式
+        paragraph=get_format(paragraph,keyword,format)
+
     document.save('example_document/example1.docx')
 
 
@@ -48,4 +53,4 @@ def output(content,get_format,report_name):
     # paragraph_format.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
     # 保存文档
-    document.save('/mnt/data/example_document.docx')
+    # document.save('/mnt/data/example_document.docx')
